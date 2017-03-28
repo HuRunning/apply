@@ -79,14 +79,19 @@ $('#submit').click(function() {
 		time = new Date(year+1+'-'+formDate).getTime()/1000;
 	}
 	$.ajax({
-		type: "POST",
+		type: "GET",
 		url:  "//"+window.location.host+"/Index/handle",
 		data: {
 			'_token': csrf_token,
 			'type': $("#room_select").val(),
+			'people': $("#people").val(),
+			'other': $("#other").val(),
+			'theme': $("#theme").val(),
+			'classify': $("#classify").val(),
 			'activity': $("#activity").val(),
 			'org': $("#org").val(),
 			'phone': $("#phone").val(),
+			'email': $("#email").val(),
 			'timeA': ($("#timeA").get(0).selectedIndex)*30*60+time + (startTime - 8) * 60 * 60,
 			'timeB': ($("#timeB").get(0).selectedIndex)*30*60+time + (startTime - 8) * 60 * 60
 		},
@@ -102,7 +107,7 @@ $('#submit').click(function() {
 });
 function operation_submit(id,operation,reason) {
 	$.ajax({
-		type: "POST",
+		type: "GET",
 		url:  "//"+window.location.host+"/Index/auditHandle",
 		data: {
 			'_token': csrf_token,

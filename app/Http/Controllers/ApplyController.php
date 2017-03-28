@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 use App\Org;
 use App\Classroom;
 use App\Info;
 use App\Auth;
+use App\Classify;
 
 class ApplyController extends Controller
 {
@@ -138,6 +140,21 @@ class ApplyController extends Controller
                 'reason' => $his['reason'],
             ];
         }
+
+
+
+        $classifies=Classify::all();
+        if($orgId==1||$orgId==4)
+        {
+                $classify=$classifies->where('id2',1);
+        }elseif($orgId==5)
+        {
+                $classify=$classifies->where('id2',2);
+            
+        }else
+        {
+            $classify="";
+        }
         // dd($audit);
 
         return view($wenzhi ? 'index.wenzhi' : 'index.index', [
@@ -150,6 +167,7 @@ class ApplyController extends Controller
             'act'       => $activity,
             'audit'     => $audit,
             'history'   => $history,
+            'classify'   => $classify,
         ]);
     }
 
@@ -174,17 +192,21 @@ class ApplyController extends Controller
     public function apply()
     {
         $newInfo = new Info;
-        //
-        if(requrst()->input('timeA')<(time()+7200)){return '最晚提前两天预约';}
-        //
+        if(time()+172800>(request()->input('timeA')))
+        {
+            var_dump("最晚提前两天提交申请");
+            return false ;
+        };
         $newInfo['name']    = session('username');
         $newInfo['netid']   = session('netid');
         //
         $newInfo['theme']   = request()->input('theme','未知主题');
         $newInfo['other']   = request()->input('other','无');
-        $newInfo['email']   = request()->input('email');
-        $newInfo['set_reset']=request()->input('set_reset');
-        $newInfo['classify'] =request()->input('classify');
+        $newInfo['email']   = request()->input('email','1281630954@qq.com');
+        $newInfo['set_reset']=request()->input('set_reset','0;1');
+        $newInfo['classify'] =request()->input('classify','1');
+        $newInfo['people']  =str_replace('}','',request()->input('people','10'));
+        $newInfo['feedback'] =request()->input('feedback','0');
         //
         $newInfo['reason']  = request()->input('activity', '未知活动');
         $newInfo['org']     = request()->input('org', '未知活动');
