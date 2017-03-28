@@ -174,9 +174,18 @@ class ApplyController extends Controller
     public function apply()
     {
         $newInfo = new Info;
-        echo $newInfo;
+        //
+        if(requrst()->input('timeA')<(time()+7200)){return '最晚提前两天预约';}
+        //
         $newInfo['name']    = session('username');
         $newInfo['netid']   = session('netid');
+        //
+        $newInfo['theme']   = request()->input('theme','未知主题');
+        $newInfo['other']   = request()->input('other','无');
+        $newInfo['email']   = request()->input('email');
+        $newInfo['set_reset']=request()->input('set_reset');
+        $newInfo['classify'] =request()->input('classify');
+        //
         $newInfo['reason']  = request()->input('activity', '未知活动');
         $newInfo['org']     = request()->input('org', '未知活动');
         $newInfo['phone']   = request()->input('phone', '11111111111');
