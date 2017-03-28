@@ -4,7 +4,7 @@ $('.tb_body').click(function(e) {
 	};
 	if (!login) {
 		alert('请先登入');
-		document.location = 'https://apply.tiaozhan.com/Index/login';
+		document.location = "//"+window.location.host+"/Index/login";
 		return false;
 	}
 	$('#date').text($(this).parent().find('.tb_date').text());
@@ -14,7 +14,7 @@ $('.tb_body').click(function(e) {
 $('#user_info').click(function(e) {
 	if (!login) {
 		alert('请先登入');
-		document.location = 'https://apply.tiaozhan.com/Index/login';
+		document.location = "//"+window.location.host+"/Index/login";
 		return false;
 	}
 	$('#user_apply').modal();
