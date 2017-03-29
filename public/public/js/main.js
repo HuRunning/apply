@@ -82,7 +82,7 @@ $('#submit').click(function() {
 		$("#email").focus();
 		return false;
 	};
-		if (!(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/.test($("#email").val()))) {
+	if (!(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/.test($("#email").val()))) {
 		alert("email格式错误!");
 		$("#email").focus();
 		return false;
@@ -100,10 +100,24 @@ $('#submit').click(function() {
 	};
 
 	if((Date.parse(new Date())/1000+172800)>(($("#timeA").get(0).selectedIndex)*30*60+time + (startTime - 8) * 60 * 60)){
-	alert("最晚提前两天提交申请");
-	$("#timeA").focus();
-	return false;
+		alert("最晚提前两天提交申请");
+		$("#timeA").focus();
+		return false;
 	};
+	
+	var obj=$("input[name='reset']");  
+	arr = [];
+	for(k in obj){
+		if(obj[k].checked)
+			arr.push(obj[k].value);
+	};
+	var obj1=$("input[name='feedback']");  
+	arr1 = [];
+	for(k in obj1){
+		if(obj1[k].checked)
+			arr1.push(obj1[k].value);
+	}
+
 	$.ajax({
 		type: "GET",
 		url:  "//"+window.location.host+"/Index/handle",
@@ -111,6 +125,8 @@ $('#submit').click(function() {
 			'_token': csrf_token,
 			'type': $("#room_select").val(),
 			'people': $("#people").val(),
+			'drink': $("input[name='drink']:checked").val(),
+			'reset':arr,
 			'other': $("#other").val(),
 			'theme': $("#theme").val(),
 			'classify': $("#classify").val(),
@@ -118,6 +134,7 @@ $('#submit').click(function() {
 			'org': $("#org").val(),
 			'phone': $("#phone").val(),
 			'email': $("#email").val(),
+			'feedback':arr1,
 			'timeA': ($("#timeA").get(0).selectedIndex)*30*60+time + (startTime - 8) * 60 * 60,
 			'timeB': ($("#timeB").get(0).selectedIndex)*30*60+time + (startTime - 8) * 60 * 60
 		},
@@ -157,7 +174,7 @@ $('#pass').click(function() {
 $('#decline').click(function() {
 	var reason=prompt("请输入拒绝原因","");
 	if (reason!=null && reason!="") {
-	  operation_submit($("#data_id").text(),2,reason);
+		operation_submit($("#data_id").text(),2,reason);
 	}
 	return false;
 });
@@ -169,10 +186,10 @@ $('#room_select').change(function() {
 	document.location = url;
 });
 function getQueryString(name) {
-    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-    var r = window.location.search.substr(1).match(reg);
-    if (r != null) return unescape(r[2]); return null;
-    }
+	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+	var r = window.location.search.substr(1).match(reg);
+	if (r != null) return unescape(r[2]); return null;
+}
 var org = 1;
 if (getQueryString("org")) {
 	var org = ~~getQueryString("org");
