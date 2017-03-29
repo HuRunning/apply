@@ -192,11 +192,6 @@ class ApplyController extends Controller
     public function apply()
     {
         $newInfo = new Info;
-        if(time()+172800>(request()->input('timeA')))
-        {
-            var_dump("最晚提前两天提交申请");
-            return false ;
-        };
         $newInfo['name']    = session('username');
         $newInfo['netid']   = session('netid');
         //

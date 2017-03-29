@@ -52,19 +52,39 @@ $('.occupied').click(function(e) {
 	$('#info').modal();
 });
 $('#submit').click(function() {
-	if ($("#activity").val()=="") {
-		alert("活动不能为空!");
+
+	if ($("#theme").val()=="") {
+		alert("活动主题不能为空!");
+		$("#theme").focus();
+		return false;
+	};	if ($("#activity").val()=="") {
+		alert("活动内容不能为空!");
 		$("#activity").focus();
 		return false;
-	};
+	};	
 	if ($("#org").val()=="") {
 		alert("申请组织不能为空!");
 		$("#org").focus();
 		return false;
 	};
+	if ($("#activity").val()=="") {
+		alert("手机号不能为空!");
+		$("#phone").focus();
+		return false;
+	};
 	if (!(/^1\d{10}$/.test($("#phone").val()))) {
 		alert("手机号格式错误!");
 		$("#phone").focus();
+		return false;
+	};
+	if ($("#activity").val()=="") {
+		alert("email不能为空!");
+		$("#email").focus();
+		return false;
+	};
+		if (!(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/.test($("#email").val()))) {
+		alert("email格式错误!");
+		$("#email").focus();
 		return false;
 	};
 	var year = date.getFullYear();
@@ -77,7 +97,13 @@ $('#submit').click(function() {
 	var time = new Date(year+'-'+formDate).getTime()/1000;
 	if (new Date(year+'-'+month+'-'+day).getTime()/1000 > time) {
 		time = new Date(year+1+'-'+formDate).getTime()/1000;
-	}
+	};
+
+	if((Date.parse(new Date())/1000+172800)>(($("#timeA").get(0).selectedIndex)*30*60+time + (startTime - 8) * 60 * 60)){
+	alert("最晚提前两天提交申请");
+	$("#timeA").focus();
+	return false;
+	};
 	$.ajax({
 		type: "GET",
 		url:  "//"+window.location.host+"/Index/handle",

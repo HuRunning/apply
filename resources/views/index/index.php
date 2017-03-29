@@ -147,14 +147,28 @@
         </select>
     </div>
   </div>
-  <div class="form-group">
+
+  
+  <!--如果$orgid==5 theme为"default"
+  classify为活动真正主题，在数据库中仍记录在classify字段，
+  -->
+  <?php if($orgid==5){ ?>
+  <div class="form-group" hidden>
     <label for="theme" class="col-sm-2 control-label">活动主题</label>
     <div class="col-sm-10">
-      <input id="theme" name="theme" type="text" class="form-control" placeholder="">
+      <input id="theme" name="theme" type="text" class="form-control" placeholder="" value="default">
     </div>
   </div>
-  <div class="form-group">
-    <label for="room" class="col-sm-2 control-label">活动分类</label>
+  <? }else{?>
+  <div class="form-group" >
+    <label for="theme" class="col-sm-2 control-label">活动主题</label>
+    <div class="col-sm-10">
+      <input id="theme" name="theme" type="text" class="form-control" placeholder="" >
+    </div>
+  </div>
+  <?}?>
+  <div class="form-group" <?php if(!$classify){echo "hidden";};?>>
+    <label for="room" class="col-sm-2 control-label"><? if($orgid==5){echo "活动主题";}else{echo "活动分类";}?></label>
     <div class="col-sm-10">
         <select id="classify" name="classify" class="form-control">
           <?php
@@ -163,11 +177,17 @@
                  if ($value['id']=='8') $select="selected";
                 echo "<option value=".$value['id']." {$select}>{$value['classfication']}</option>";
              }
-             }
+             }else{echo "<option value='1'></option>";}
           ?>
         </select>
     </div>
   </div>
+
+
+
+
+
+
   <div class="form-group">
     <label for="activity" class="col-sm-2 control-label">活动内容</label>
     <div class="col-sm-10">
